@@ -16,12 +16,12 @@ export default function Formulario({ children, onClick }) {
     }
 
     return (
-        <div className={styles.formulaio__container}>
-            <h2 className={styles.formulaio__titulo}>{children}</h2>
+        <div className={styles.formulario__container}>
+            <h2 className={styles.formulario__titulo}>{children}</h2>
             <form onSubmit={handleSubmit} className={styles.formulario}>
                 <label>Titulo</label>
                 <input 
-                    className={styles.formulaio__input} 
+                    className={styles.formulario__input} 
                     type="text" 
                     placeholder="Digite o Titulo" 
                     name="titulo"
@@ -32,7 +32,7 @@ export default function Formulario({ children, onClick }) {
                 <label>Conteudo</label>
 
                 <textarea 
-                    className={styles.formulaio__input} 
+                    className={styles.formulario__input} 
                     type='text' 
                     placeholder="Digite o conteudo do Post" 
                     rows={10} 
@@ -46,7 +46,7 @@ export default function Formulario({ children, onClick }) {
                 <label>Capa</label>
 
                 <input 
-                className={styles.formulaio__input} 
+                className={styles.formulario__input} 
                 type="text" 
                 placeholder="Digite a URL da imagem" 
                 name='capa'
@@ -54,7 +54,7 @@ export default function Formulario({ children, onClick }) {
                 onChange={handleInputChange}
                 />
 
-                <button className={styles.botao__formulaio} to={""} >{children}</button>
+                <button className={styles.botao__formulario} to={""} >{children}</button>
             </form>
         </div>
     )

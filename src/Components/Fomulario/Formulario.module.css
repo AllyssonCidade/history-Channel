@@ -1,4 +1,4 @@
-.formulaio__container {
+.formulario__container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,7 +10,7 @@
     border-color: var(--azul-escuro);
 }
 
-.formulaio__titulo {
+.formulario__titulo {
     font-size: 32px;
     font-weight: bolder;
     margin-bottom: 3vh;
@@ -21,13 +21,13 @@
     display: flex;
     flex-direction: column;
     text-align: start;
-    width: 80vw;
-    padding: 10vh;
-    box-shadow: 0 0 10px;
-    border-radius: 20px;
+    width: 100vw;
+    padding-bottom: 10vh;
+    padding-top: 10vh;
+    box-shadow: 0 0 2px;
 }
 
-.formulaio__input {
+.formulario__input {
     margin-bottom: 5vh;
     margin-top: 1vh;
     border-radius: 20px;
@@ -41,7 +41,7 @@ textarea{
     resize: vertical;
  }
 
-.botao__formulaio {
+.botao__formulario {
     display: inline-block;
     border-radius: 24px;
     padding: 0.75rem 1.5rem;
@@ -55,27 +55,30 @@ textarea{
     text-align: center;
 }
 
-.botao__formulaio:hover {
+.botao__formulario:hover {
     border: 3px solid var(--azul-escuro);
 }
 
 @media screen and (min-width:320px) {
-    .formulaio {
-        width: 95%;
+    .formulario {
+        width: 95vw;
         padding: 5vh 5px 5vh 5px;
+        box-shadow: none;
     }
-
-    .formulaio__input {
+    .formulario__input {
         width: 100%;
     }
 }
 @media screen and (min-width:768px) {
-    .formulaio {
+    .formulario {
         width: 80vw;
         padding: 5vh 5px 5vh 5px;
+        padding: 10vh;
+        box-shadow: 0 0 10px;
+        border-radius: 20px;
     }
 
-    .formulaio__input {
+    .formulario__input {
         width: 100%;
     }
 }
