@@ -1,23 +1,26 @@
-import styles from './Post.module.css'
-import BotaoPrincipal from '../../Components/BotaoPrincipal'
+import styles from './Post.module.css';
+import BotaoPrincipal from '../../Components/BotaoPrincipal';
 import { AiFillCloseCircle, AiFillEdit } from "react-icons/ai";
 import { useContext, useState } from 'react';
 import FormularioContext from '../../Contexts/FormularioContext';
 
-
-export default function PostCard({ post, textoBotao, isInHomePage, showEditPost}) {
-    const { dadosDoFormulario } = useContext(FormularioContext);
-    const [posts, setPosts] = useState([]);
-
+export default function PostCard({ post, textoBotao, isInHomePage }) {
+    const { setDadosDoFormulario } = useContext(FormularioContext);
     const [deletarPost, setDeletarPost] = useState(false);
+
     async function aoDeletar() {
         await post.destroy();
         setDeletarPost(true);
     }
 
     function aoEditar() {
-        console.log("editando")
-        console.log(posts.id)
+        const dataPost = {
+            objectId: post.id,
+            titulo: post.get('titulo'),
+            conteudo: post.get('conteudo'),
+            capa: post.get('capa')
+        };
+        setDadosDoFormulario(dataPost);
     }
 
     if (deletarPost) {
@@ -25,13 +28,13 @@ export default function PostCard({ post, textoBotao, isInHomePage, showEditPost}
     }
 
     return (
-        <div >
+        <div>
             <div className={styles.post}>
                 {isInHomePage && (
-                <>
-                <AiFillCloseCircle className={styles.deletar} onClick={aoDeletar} />
-                <AiFillEdit className={styles.editar} onClick={aoEditar} />
-                </>
+                    <>
+                        <AiFillCloseCircle className={styles.deletar} onClick={aoDeletar} />
+                        <AiFillEdit className={styles.editar} onClick={aoEditar} />
+                    </>
                 )}
                 <img
                     className={styles.capa}
@@ -42,7 +45,5 @@ export default function PostCard({ post, textoBotao, isInHomePage, showEditPost}
                 <BotaoPrincipal to={`/posts/${post.id}`}>{textoBotao}</BotaoPrincipal>
             </div>
         </div>
-    )
+    );
 }
-
-

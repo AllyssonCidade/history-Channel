@@ -6,37 +6,57 @@ import FormularioContext from '../../Contexts/FormularioContext'
 import Parse from 'parse/dist/parse.min.js';
 
 export default function Home() {
-    const { dadosDoFormulario } = useContext(FormularioContext);
+    const { dadosDoFormulario, setDadosDoFormulario } = useContext(FormularioContext);
     const [posts, setPosts] = useState([]);
 
-        async function addPost() {
-            try {
-            const Post = new Parse.Object('Post');
-            Post.set(dadosDoFormulario);
+    async function addPost(dados) {
+        try {
+            let Post;
+            if (dados.objectId) {
+                const query = new Parse.Query('Post');
+                Post = await query.get(dados.objectId);
+            } else {
+                Post = new Parse.Object('Post');
+            }
+
+            Post.set('titulo', dados.titulo);
+            Post.set('conteudo', dados.conteudo);
+            Post.set('capa', dados.capa);
+            
             await Post.save();
-            alert('Post saved!');
+            alert('Post salvo com sucesso!');
+
+            const updatedPosts = await new Parse.Query('Post').find();
+            setPosts(updatedPosts);
+
+            setDadosDoFormulario({
+                'titulo': '',
+                'conteudo': '',
+                'capa': '',
+                'objectId': ''
+            });
+        } catch (error) {
+            console.log('Erro ao salvar o post: ', error);
+        }
+    }
+
+    useEffect(() => {
+        async function fetchPosts() {
+            const query = new Parse.Query('Post');
+            try {
+                const posts = await query.find();
+                setPosts(posts);
             } catch (error) {
-            console.log('Error saving new post: ', error);
+                console.error(error);
             }
         }
-        useEffect(() => {
-            async function fetchPost() {
-                const query = new Parse.Query('Post');
-                try {
-                    const posts = await query.find();
-                    setPosts(posts);
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-            fetchPost();
-        }, []);
-        console.log(posts)
-    
+        fetchPosts();
+    }, []);
+
     return (
         <>
-        <Formulario onClick={addPost} >
-            Adicionar Post
+        <Formulario onClick={addPost}>
+            {dadosDoFormulario.objectId ? 'Editar Post' : 'Adicionar Post'}
         </Formulario>
         <ul className={styles.posts}>
             {posts === null ? (
@@ -44,19 +64,11 @@ export default function Home() {
             ) : (
                 posts.map((post) => (
                     <li key={post.id}>
-                        <PostCard post={post} textoBotao={"editar"} isInHomePage={true} />
+                        <PostCard post={post} textoBotao={"ver"} isInHomePage={true} />
                     </li>
                 ))
             )}
         </ul>
-        {/* <ul className={styles.posts}>
-            {posts.map((post) => (
-                <li key={post.id}>
-                    <PostCard post={post} textoBotao={"editar"} isInHomePage={true}/>
-                </li>
-            ))}
-        </ul> */}
-            </>
-    )
+        </>
+    );
 }
-
