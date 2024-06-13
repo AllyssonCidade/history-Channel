@@ -1,9 +1,14 @@
 import styles from './Menu.module.css';
 import MenuLink from '../MenuLink';
 import Parse from 'parse/dist/parse.min.js';
+import { useAuth } from '../../Contexts/AuthContext';
 
 export default function Menu() {
-    const currentUser = Parse.User.current();
+    const { isAuthenticated, logout } = useAuth();
+    async function doUserLogout(){
+        Parse.User.logOut();
+        logout();
+    }
 
     return (
         <header>
@@ -15,15 +20,22 @@ export default function Menu() {
                 <MenuLink to= "/sobremim">
                     Sobre Mim
                 </MenuLink>
-                {currentUser ? 
-                <MenuLink to= "/home">
-                    Home
+                {isAuthenticated ? 
+                <MenuLink onClick={doUserLogout} to= "/login" >
+                    Logout
                 </MenuLink>
                     :
                 <MenuLink to= "/login">
                     Login
                 </MenuLink>
-                 }
+                }
+                {isAuthenticated ? 
+                <MenuLink to= "/home">
+                    Home
+                </MenuLink>
+                :
+                null
+                }
             </nav>
         </header>
     )

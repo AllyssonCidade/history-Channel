@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import styles from './MenuLink.module.css';
 
-export default function MenuLink({ children, to }) {
+export default function MenuLink({ children, to, onClick }) {
 
     return (
         <NavLink
@@ -11,6 +11,7 @@ export default function MenuLink({ children, to }) {
             `}
             to={to}
             end
+            onClick={onClick}
         >
             {children}
         </NavLink>

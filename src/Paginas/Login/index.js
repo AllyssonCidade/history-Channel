@@ -2,18 +2,20 @@ import styles from "./Login.module.css";
 import Parse from 'parse/dist/parse.min.js';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../Contexts/AuthContext';
+
 
 export const Login = () => {
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const { login, logout } = useAuth();
 
     const doUserLogin = async (event) => {
         event.preventDefault();
         const usernameValue = username;
         const passwordValue = password;
-        console.log("Username value:", usernameValue);
-        console.log("Password value:", passwordValue);
+        
         if (usernameValue.length === 0 || passwordValue.length === 0){
             alert('Username e/ou senha não podem estar vazios.');
             return false;
@@ -21,40 +23,27 @@ export const Login = () => {
         
         try {
             const logedUser = await Parse.User.logIn(usernameValue, passwordValue);
-            alert(`Success! User ${logedUser.get('username')} was successfully loged!`);
+            alert(`Success! User ${logedUser.get('username')} Está logado!`);
             const currentUser = Parse.User.current();
+            
             if (currentUser){
+                login();
                 navigate("/home");
+                setTimeout(() => {
+                    navigate("/login");
+                    Parse.User.logOut();
+                    logout()
+                    alert("Tempo de login expirado, por favor realize o LogIn novamente para continuar")
+                }, 3600000)
             }
+
             return true;
         } catch (error) {
             alert(`Por favor verifique os dados de acesso e tente novamente:`);
             return false;
         }
-    };
-    
-    // const doUserRegistration = async (event) => {
-    //     event.preventDefault();
-    //     const usernameValue = username;
-    //     const passwordValue = password;
-    //     console.log("Username value:", usernameValue);
-    //     console.log("Password value:", passwordValue);
-    //     if (usernameValue.length === 0 || passwordValue.length === 0){
-    //         alert('Username e/ou senha não podem estar vazios.');
-    //         return false;
-    //     }
-        
-    //     try {
-    //         const createdUser = await Parse.User.signUp(usernameValue, passwordValue);
-    //         alert(`Success! User ${createdUser.getUsername()} was successfully created!`);
-    //         navigate("/home");
-    //         return true;
-    //     } catch (error) {
-    //         alert(`Error signing up:, ${error}`);
-    //         alert(`Error! ${error}`);
-    //         return false;
-    //     }
-    // };
+        };
+   
     
     return (
         <main className={styles.login}>
