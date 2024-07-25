@@ -1,9 +1,16 @@
 import styles from './Formulario.module.css';
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import FormularioContext from '../../Contexts/FormularioContext';
+import TextEditor from '../Editor'
 
 export default function Formulario({ children, onClick }) {
     const { dadosDoFormulario, setDadosDoFormulario } = useContext(FormularioContext);
+    const [editorContent, setEditorContent] = useState('');
+
+    const handleContentChange = (content) => {
+        setEditorContent(content);
+        setDadosDoFormulario({...dadosDoFormulario, conteudo: content });
+      };
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -14,7 +21,7 @@ export default function Formulario({ children, onClick }) {
         event.preventDefault();
         onClick(dadosDoFormulario);
     };
-
+    
     return (
         <div className={styles.formulario__container}>
             <h2 className={styles.formulario__titulo}>{children}</h2>
@@ -30,18 +37,11 @@ export default function Formulario({ children, onClick }) {
                 />
 
                 <label>Conteúdo</label>
-                <textarea 
-                    className={styles.formulario__input} 
-                    type='text' 
-                    placeholder="Digite o conteúdo do Post" 
-                    rows={10} 
-                    spellCheck='true'
-                    autoComplete='true'
-                    name='conteudo'
-                    value={dadosDoFormulario.conteudo || ''}
-                    onChange={handleInputChange}
-                />
-
+                <TextEditor
+                value={dadosDoFormulario.conteudo || ""}
+                onContentChange={handleContentChange}
+                 />
+        
                 <label>Capa</label>
                 <input 
                     className={styles.formulario__input} 

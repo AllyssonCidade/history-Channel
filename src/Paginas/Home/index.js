@@ -8,7 +8,7 @@ import Parse from 'parse/dist/parse.min.js';
 export default function Home() {
     const { dadosDoFormulario, setDadosDoFormulario } = useContext(FormularioContext);
     const [posts, setPosts] = useState([]);
-
+    
     async function addPost(dados) {
         try {
             let Post;

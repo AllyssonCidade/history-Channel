@@ -8,13 +8,13 @@ import styles from './Post.module.css';
 import ReactMarkdown from 'react-markdown';
 import { useEffect, useState } from "react";
 import Parse from 'parse/dist/parse.min.js';
+import rehypeRaw from 'rehype-raw';
 
 export default function Post() {
     const { id } = useParams();
     const [post, setPost] = useState(undefined);
     const [posts, setPosts] = useState([]);
     const [postRecomendado, setPostRecomendado] = useState([]);
-
     useEffect(() => {
         async function fetchPost() {
             const query = new Parse.Query('Post');
@@ -66,7 +66,7 @@ export default function Post() {
                 titulo={post.get('titulo')}
             >
                 <div className="post-markdown-container">
-                    <ReactMarkdown>
+                    <ReactMarkdown rehypePlugins={[rehypeRaw]}>
                         {post.get('conteudo')}
                     </ReactMarkdown>
                 </div>
